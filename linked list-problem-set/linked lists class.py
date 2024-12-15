@@ -45,3 +45,19 @@ class LinkedList:
         # Update the head and tail pointers
         self.tail = self.head  # The old head becomes the tail
         self.head = prev       # The last processed node becomes the new head
+
+    
+    def delete(self, target):
+        current = self.head  # Start from the head
+        previous = None      # Keep track of the previous node
+
+        while current: 
+            if current.data == target:
+                if previous is None:  # If target is in the head node
+                    self.head = current.next
+                else:  # Target is somewhere in the middle or end
+                    previous.next = current.next
+                return  # Exit after deleting the node
+            previous = current  # Move the previous pointer
+            current = current.next  # Move to the next node
+    
