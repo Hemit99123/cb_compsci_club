@@ -3,23 +3,23 @@ class Node:
     def __init__(self, data):
         self.data = data  # Store the data (value)
         self.next = None  # Pointer to the next node (default is None)
-        
-# Define the LinkedList class (continued with common operations)
+
+# Define the LinkedList class
 class LinkedList:
     def __init__(self):
-        self.head = None  # Initialize the head of the linked list (attribute)
+        self.head = None  # Initialize the head of the linked list
+        self.tail = None  # Initialize the tail of the linked list
 
     # Method to add a node at the end of the list
     def append(self, data):
         new_node = Node(data)  # Create a new node object
-        if self.head is None:  # If the list is empty, make this node the head (the start of the linked list)
+        if self.head is None:  # If the list is empty, make this node the head and tail
             self.head = new_node
+            self.tail = new_node
             return
-        # Traverse to the end of the list
-        current = self.head
-        while current.next != None: #Continue traversing list unless there is no next node
-            current = current.next
-        current.next = new_node  # Link the new node at the end
+        # Link the new node at the end and update the tail
+        self.tail.next = new_node
+        self.tail = new_node
 
     # Method to display the list
     def display(self):
@@ -29,33 +29,19 @@ class LinkedList:
             current = current.next  # Move to the next node
         print("None")  # End of the list
 
-    # Method to insert a node at the beginning of the list
-    def insert_at_beginning(self, data):
-        new_node = Node(data)  # Create a new node
-        new_node.next = self.head  # Link the new node to the current head
-        self.head = new_node  # Make the new node the head
+    # Method to reverse the linked list
+    def reverse(self):
+        # Initialize pointers
+        prev = None  # Previous node, initially None
+        current = self.head  # Start with the head node
 
-    # Method to search for a value in the list
-    def search(self, key):
-        current = self.head
+        # Traverse the list and reverse the pointers
         while current:
-            if current.data == key:  # Check if the current node has the value
-                return True
-            current = current.next  # Move to the next node
-        return False
+            next_node = current.next  # Temporarily store the next node
+            current.next = prev       # Reverse the current node's pointer
+            prev = current            # Move the previous pointer to the current node
+            current = next_node       # Move to the next node
 
-    def delete(self, target):
-        current = self.head  # Start from the head
-        previous = None      # Keep track of the previous node
-
-        while current: 
-            if current.data == target:
-                if previous is None:  # If target is in the head node
-                    self.head = current.next
-                else:  # Target is somewhere in the middle or end
-                    previous.next = current.next
-                return  # Exit after deleting the node
-            previous = current  # Move the previous pointer
-            current = current.next  # Move to the next node
-    
-    
+        # Update the head and tail pointers
+        self.tail = self.head  # The old head becomes the tail
+        self.head = prev       # The last processed node becomes the new head
